@@ -7,4 +7,8 @@ class MachinePrecisionTests extends FlatSpec {
     assert(MachinePrecision.machinePrecision == Math.pow(10, -15))
   }
 
+  "Machine precision " should " return false on addition's associativity " in {
+    assert(!MachinePrecision.isAdditionNotAssociativeWithMachinePrecision)
+  }
+
 }
