@@ -6,12 +6,9 @@ object MachinePrecision {
     Stream.cons(Math.pow(10, -start), negativePowsOfTen(start + 1))
   }
 
-  def machinePrecision: Double =
+  val machinePrecision: Double =
     negativePowsOfTen(0).takeWhile(_ + 1.0 != 1).last
 
-  def isAdditionNotAssociativeWithMachinePrecision: Boolean = {
-    val mp = machinePrecision
-
-    ((1.0 + mp) + mp) == (1.0 + (mp + mp))
-  }
+  def isAdditionNotAssociativeWithMachinePrecision: Boolean =
+    ((1.0 + machinePrecision) + machinePrecision) == (1.0 + (machinePrecision + machinePrecision))
 }
