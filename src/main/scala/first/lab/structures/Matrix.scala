@@ -10,10 +10,10 @@ object Matrix {
     def allRowsOfSameLength(rows: List[List[A]]) =
       rows.forall(r => r.length == matrix.rows.maxBy(m => m.length).length)
 
-    def isRowLengthIsPowerOfTwo(): Boolean =
+    def isRowLengthPowerOfTwo: Boolean =
       Matrix.powsOfTwo(0).contains(matrix.rows.head.length)
 
-    allRowsOfSameLength(matrix.rows) && isRowLengthIsPowerOfTwo()
+    allRowsOfSameLength(matrix.rows) && isRowLengthPowerOfTwo
   }
 
   def powsOfTwo(from: Int): Stream[Int] = Stream.cons(from * from, powsOfTwo(from + 1))
