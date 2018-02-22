@@ -36,6 +36,6 @@ object Matrix {
       currIndex <- row.indices.toList
     } yield row.zipWithIndex.foldRight(n.zero)((curr, acc) => updateSum(acc, curr, currIndex))
 
-    Matrix(splitIntoRows(productStream, firstMatrix.rows.head.length))
+    new Matrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))
   }
 }
