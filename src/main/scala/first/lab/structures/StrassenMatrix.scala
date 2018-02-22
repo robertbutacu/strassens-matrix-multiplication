@@ -1,0 +1,71 @@
+package first.lab.structures
+
+
+case class StrassenMatrix[+A: Numeric](rows: List[List[A]]) extends Matrix[A] {
+  require(StrassenMatrix.isValidMatrix(this))
+}
+
+object StrassenMatrix {
+  def isValidMatrix[A](matrix: StrassenMatrix[A]): Boolean = {
+    def allRowsOfSameLength(rows: List[List[A]]) =
+      rows.forall(r => r.length == matrix.rows.maxBy(m => m.length).length)
+
+    def isRowLengthPowerOfTwo: Boolean =
+      StrassenMatrix.powersOfTwo(0)
+        .dropWhile(_ < matrix.rows.head.length)
+        .head == matrix.rows.head.length
+
+    allRowsOfSameLength(matrix.rows) && isRowLengthPowerOfTwo
+  }
+
+  def powersOfTwo(from: Int): Stream[Double] =
+    Stream.cons(Math.pow(2, from), powersOfTwo(from + 1))
+
+
+  def multiplyMatrices[A: Numeric](firstMatrix: StrassenMatrix[A],
+                                   secondMatrix: StrassenMatrix[A])
+                                  (implicit m: Numeric[A]): StrassenMatrix[A] = {
+    type ValueWithIndex = (A, Int)
+
+    def updateSum(sumSoFar: A, currElement: ValueWithIndex, currIndex: Int): A =
+      m.plus(sumSoFar, m.times(currElement._1, secondMatrix.rows(currElement._2)(currIndex)))
+
+    def splitIntoRows(values: List[A], rowLength: Int): List[List[A]] = {
+      require(values.length % rowLength == 0)
+
+      if (values.isEmpty)
+        List.empty
+      else
+        values.slice(0, rowLength) :: splitIntoRows(values.drop(rowLength), rowLength)
+    }
+
+    def rowProduct(row: List[A], currIndex: Int): A =
+      row.zipWithIndex.foldRight(m.zero) {
+        (curr, acc) =>
+          updateSum(acc, curr, currIndex)
+      }
+
+    val productStream: List[A] = for {
+      row <- firstMatrix.rows
+      currIndex <- row.indices.toList
+    } yield rowProduct(row, currIndex)
+
+    new StrassenMatrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
+  }
+
+  def A11[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+
+  def A12[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+
+  def A21[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+
+  def A22[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+
+  def B11[A](matrix: Matrix[A]): Matrix[A] = A11(matrix)
+
+  def B12[A](matrix: Matrix[A]): Matrix[A] = A12(matrix)
+
+  def B21[A](matrix: Matrix[A]): Matrix[A] = A21(matrix)
+
+  def B22[A](matrix: Matrix[A]): Matrix[A] = A22(matrix)
+}

@@ -1,6 +1,6 @@
 package first.lab
 
-import first.lab.structures.Matrix
+import first.lab.structures.StrassenMatrix
 import org.scalatest.FlatSpec
 
 class MachinePrecisionTests extends FlatSpec {
@@ -13,10 +13,10 @@ class MachinePrecisionTests extends FlatSpec {
   }
 
   "Calling multiplyMatrices " should " return the multiplication of the matrices " in {
-    val m1 = Matrix((1 to 2).toList.map(_ => (1 to 2).toList))
+    val m1 = StrassenMatrix((1 to 2).toList.map(_ => (1 to 2).toList))
 
-    val m2 = Matrix(m1.rows.map(_.reverse))
+    val m2 = StrassenMatrix(m1.rows.map(_.reverse))
 
-    assert(Matrix.multiplyMatrices(m1, m2) === Matrix(List(List(6, 3), List(6, 3))))
+    assert(StrassenMatrix.multiplyMatrices(m1, m2) === StrassenMatrix(List(List(6, 3), List(6, 3))))
   }
 }
