@@ -19,5 +19,4 @@ class MachinePrecisionTests extends FlatSpec {
 
     assert(Matrix.multiplyMatrices(m1, m2) === Matrix(List(List(6, 3), List(6, 3))))
   }
-
 }

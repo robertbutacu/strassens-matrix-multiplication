@@ -22,15 +22,13 @@ object Matrix {
   def multiplyMatrices[A: Numeric](firstMatrix: Matrix[A], secondMatrix: Matrix[A])(implicit m: Numeric[A]): Matrix[A] = {
     type ValueWithIndex = (A, Int)
 
-    def updateSum(sumSoFar: A, currElement: ValueWithIndex, currIndex: Int): A ={
-      println(sumSoFar)
+    def updateSum(sumSoFar: A, currElement: ValueWithIndex, currIndex: Int): A =
       m.plus(sumSoFar, m.times(currElement._1, secondMatrix.rows(currElement._2)(currIndex)))
-    }
 
-    def splitIntoRows(values: List[A], rowLength: Int): List[List[A]] ={
+    def splitIntoRows(values: List[A], rowLength: Int): List[List[A]] = {
       require(values.length % rowLength == 0)
 
-      if(values.isEmpty)
+      if (values.isEmpty)
         List.empty
       else
         values.slice(0, rowLength) :: splitIntoRows(values.drop(rowLength), rowLength)
@@ -41,8 +39,6 @@ object Matrix {
       currIndex <- row.indices.toList
     } yield row.zipWithIndex.foldRight(m.zero)((curr, acc) => updateSum(acc, curr, currIndex))
 
-    val resultMatrix = splitIntoRows(productStream, firstMatrix.rows.head.length)
-
-    new Matrix[A](resultMatrix)(m)
+    new Matrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
   }
 }
