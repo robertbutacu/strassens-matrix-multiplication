@@ -8,6 +8,9 @@ class MachinePrecisionTests extends FlatSpec {
 
   lazy val m2 = StrassenMatrix(m1.rows.map(_.reverse))
 
+  lazy val singleElementMatrix = StrassenMatrix(List(List(1)))
+
+
   "When machinePrecision is called" should " return 10 ^ (-15) " in {
     assert(MachinePrecision.machinePrecision === Math.pow(10, -15))
   }
@@ -17,8 +20,6 @@ class MachinePrecisionTests extends FlatSpec {
   }
 
   "Calling multiplyMatrices " should " return the multiplication of the matrices " in {
-
-
     assert(StrassenMatrix.multiplyMatrices(m1, m2) === StrassenMatrix(List(List(6, 3), List(6, 3))))
   }
 
@@ -28,5 +29,13 @@ class MachinePrecisionTests extends FlatSpec {
 
   "Adding 2 Strassen Matrices " should "return a Strassen matrix" in {
     assert(m1 +++ m1 === StrassenMatrix((1 to 2).toList.map(e => (1 to 2).toList.map(_ * 2))))
+  }
+
+  "Adding 2 Strassen Matrices of different lengths" should " fail " in {
+    assertThrows[IllegalArgumentException](m1 +++ singleElementMatrix)
+  }
+
+  "Adding 2 Strassen Matrices of 1 element " should " be fine " in {
+    assert(singleElementMatrix +++ singleElementMatrix === StrassenMatrix(List(List(2))))
   }
 }

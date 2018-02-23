@@ -61,19 +61,35 @@ object StrassenMatrix {
     new StrassenMatrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
   }
 
-  def A11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
+  def A11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    new StrassenMatrix[A](List.empty)(n)
+  }
 
-  def A12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
+  def A12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    new StrassenMatrix[A](List.empty)(n)
+  }
 
-  def A21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
+  def A21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    new StrassenMatrix[A](List.empty)(n)
+  }
 
-  def A22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
+  def A22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    new StrassenMatrix[A](List.empty)(n)
+  }
 
-  def B11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A11(matrix)(n)
+  def B11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    A11(matrix)(n)
+  }
 
-  def B12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A12(matrix)(n)
+  def B12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    A12(matrix)(n)
+  }
 
-  def B21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A21(matrix)(n)
+  def B21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    A21(matrix)(n)
+  }
 
-  def B22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A22(matrix)(n)
+  def B22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    A22(matrix)(n)
+  }
 }
