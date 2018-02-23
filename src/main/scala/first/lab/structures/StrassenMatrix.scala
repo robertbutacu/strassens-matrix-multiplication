@@ -1,8 +1,14 @@
 package first.lab.structures
 
 
-case class StrassenMatrix[+A: Numeric](rows: List[List[A]]) extends Matrix[A] {
+case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
   require(StrassenMatrix.isValidMatrix(this))
+
+  override def rowLength: Int = this.rows.head.length
+
+  override def add(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+    new RegularMatrix[A](this.rows.zip(other.rows).map(p => p._1.zip(p._2).map(v => n.plus(v._1, v._2))))(n)
+  }
 }
 
 object StrassenMatrix {
@@ -53,19 +59,19 @@ object StrassenMatrix {
     new StrassenMatrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
   }
 
-  def A11[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+  def A11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
 
-  def A12[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+  def A12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
 
-  def A21[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+  def A21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
 
-  def A22[A](matrix: Matrix[A]): Matrix[A] = new StrassenMatrix[A](List.empty)
+  def A22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = new StrassenMatrix[A](List.empty)(n)
 
-  def B11[A](matrix: Matrix[A]): Matrix[A] = A11(matrix)
+  def B11[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A11(matrix)(n)
 
-  def B12[A](matrix: Matrix[A]): Matrix[A] = A12(matrix)
+  def B12[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A12(matrix)(n)
 
-  def B21[A](matrix: Matrix[A]): Matrix[A] = A21(matrix)
+  def B21[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A21(matrix)(n)
 
-  def B22[A](matrix: Matrix[A]): Matrix[A] = A22(matrix)
+  def B22[A](matrix: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = A22(matrix)(n)
 }
