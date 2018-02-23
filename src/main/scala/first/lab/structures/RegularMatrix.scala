@@ -10,5 +10,4 @@ case class RegularMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
 
     new RegularMatrix[A](this.rows.zip(other.rows).map(p => p._1.zip(p._2).map(v => n.plus(v._1, v._2))))(n)
   }
-
 }
