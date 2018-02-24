@@ -9,7 +9,12 @@ case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
   override def +++(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
     require(this.rowLength == other.rowLength)
 
-    new StrassenMatrix[A](this.rows.zipWithIndex.map(p => p._1.zip(other.rows(p._2)).map(v => n.plus(v._1, v._2))))(n)
+    new StrassenMatrix[A](this.rows
+      .zipWithIndex
+      .map { p =>
+        p._1.zip(other.rows(p._2))
+          .map(v => n.plus(v._1, v._2))
+      })(n)
   }
 }
 
