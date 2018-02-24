@@ -12,8 +12,8 @@ case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
     new StrassenMatrix[A](this.rows
       .zipWithIndex
       .map { p =>
-        p._1.zip(other.rows(p._2))
-          .map(v => n.plus(v._1, v._2))
+        p._1.zip(other.rows(p._2)) // zipping with other corresponding row from other matrix
+          .map(v => n.plus(v._1, v._2)) // mapping them plus
       })(n)
   }
 }
