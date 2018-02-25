@@ -6,4 +6,6 @@ trait Matrix[A] {
   def rowLength: Int
 
   def +++(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A]
+
+  def ---(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A]
 }
