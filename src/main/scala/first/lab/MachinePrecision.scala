@@ -7,7 +7,7 @@ object MachinePrecision {
   }
 
   val machinePrecision: Double =
-    negativePowsOfTen(0).takeWhile(_ + 1.0 != 1).last
+    negativePowsOfTen(0).view.takeWhile(_ + 1.0 != 1).last
 
   def isAdditionNotAssociativeWithMachinePrecision: Boolean =
     ((1.0 + machinePrecision) + machinePrecision) == (1.0 + (machinePrecision + machinePrecision))
