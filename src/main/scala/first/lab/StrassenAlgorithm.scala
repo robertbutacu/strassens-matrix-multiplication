@@ -19,7 +19,7 @@ object StrassenAlgorithm {
         val P1 = go(
           A11(firstMatrix) +++ A22(firstMatrix),
           B11(secondMatrix) +++ B22(secondMatrix),
-          n - 1,
+          n / 2,
           minN)
 
         val P2 = go(A21(firstMatrix) +++ A22(firstMatrix), B11(secondMatrix), n / 2, minN)
@@ -47,15 +47,26 @@ object StrassenAlgorithm {
         val C12 = P3 +++ P5
         val C22 = P1 +++ P3 --- P2 +++ P6
 
-        println("C11 " + C11)
-        println("C21 " + C21)
-        println("C12 " + C12)
-        println("C22 " + C22)
-
-        new StrassenMatrix[A](List.empty)
+        combineMatrices(C11, C12, C21, C22)
       }
     }
 
     go(firstMatrix, secondMatrix, firstMatrix.rowLength, minN)
+  }
+
+  private def combineMatrices[A](C11: StrassenMatrix[A],
+                                 C12: StrassenMatrix[A],
+                                 C21: StrassenMatrix[A],
+                                 C22: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
+    def combineHorizontally(first: StrassenMatrix[A], second: StrassenMatrix[A]): List[List[A]] =
+      first.rows
+        .zipWithIndex
+        .map(r => r._1 ::: second.rows(r._2))
+
+    val upperHalfCombined = combineHorizontally(C11, C12)
+
+    val lowerHalfCombined = combineHorizontally(C21, C22)
+
+    StrassenMatrix(upperHalfCombined ++ lowerHalfCombined)(n)
   }
 }
