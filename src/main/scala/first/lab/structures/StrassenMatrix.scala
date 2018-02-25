@@ -4,7 +4,7 @@ package first.lab.structures
 case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
   require(StrassenMatrix.isValidMatrix(this))
 
-  override def rowLength: Int = if(this.rows.isEmpty) 0 else this.rows.head.length
+  override def rowLength: Int = if (this.rows.isEmpty) 0 else this.rows.head.length
 
   override def +++(other: Matrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
     require(this.rowLength == other.rowLength)
@@ -33,7 +33,7 @@ case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
 object StrassenMatrix {
   def isValidMatrix[A](matrix: StrassenMatrix[A]): Boolean = {
     def allRowsOfSameLength(rows: List[List[A]]) =
-      rows.forall(r => r.length == matrix.rows.maxBy(m => m.length).length)
+      rows.forall(currRow => currRow.length == rows.maxBy(r => r.length).length)
 
     def isRowLengthPowerOfTwo: Boolean =
       if (matrix.rows.isEmpty) true
@@ -47,7 +47,6 @@ object StrassenMatrix {
 
   def powersOfTwo(from: Int): Stream[Double] =
     Stream.cons(Math.pow(2, from), powersOfTwo(from + 1))
-
 
   def multiplyMatrices[A: Numeric](firstMatrix: StrassenMatrix[A],
                                    secondMatrix: StrassenMatrix[A])
@@ -66,8 +65,8 @@ object StrassenMatrix {
         values.slice(0, rowLength) :: splitIntoRows(values.drop(rowLength), rowLength)
     }
 
-    def rowProduct(row: List[A], currIndex: Int): A =
-      row.zipWithIndex.foldRight(m.zero) {
+    def computeUpdatedValueForCurrentPosition(l: List[(A, Int)], currIndex: Int) =
+      l.foldRight(m.zero) {
         (curr, acc) =>
           updateSum(acc, curr, currIndex)
       }
@@ -75,7 +74,9 @@ object StrassenMatrix {
     val productStream: List[A] = for {
       row <- firstMatrix.rows
       currIndex <- row.indices.toList
-    } yield rowProduct(row, currIndex)
+      elementsWithIndex = row.zipWithIndex
+      valueForCurrentPosition = computeUpdatedValueForCurrentPosition(elementsWithIndex, currIndex)
+    } yield valueForCurrentPosition
 
     new StrassenMatrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
   }
