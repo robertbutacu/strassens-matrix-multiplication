@@ -4,21 +4,21 @@ package first.lab.structures
 case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
   require(StrassenMatrix.isValidMatrix(this))
 
-  override def rowLength: Int = this.rows.head.length
+  override def rowLength: Int = if(this.rows.isEmpty) 0 else this.rows.head.length
 
-  override def +++(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+  override def +++(other: Matrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
     require(this.rowLength == other.rowLength)
 
     applyOperation(other, n.plus)
   }
 
-  override def ---(other: Matrix[A])(implicit n: Numeric[A]): Matrix[A] = {
+  override def ---(other: Matrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
     require(this.rowLength == other.rowLength)
 
     applyOperation(other, n.minus)
   }
 
-  private def applyOperation(other: Matrix[A], f: (A, A) => A): Matrix[A] = {
+  private def applyOperation(other: Matrix[A], f: (A, A) => A): StrassenMatrix[A] = {
     require(this.rowLength == other.rowLength)
 
     new StrassenMatrix[A](this.rows
@@ -36,9 +36,11 @@ object StrassenMatrix {
       rows.forall(r => r.length == matrix.rows.maxBy(m => m.length).length)
 
     def isRowLengthPowerOfTwo: Boolean =
-      StrassenMatrix.powersOfTwo(0)
-        .dropWhile(_ < matrix.rows.head.length)
-        .head == matrix.rows.head.length
+      if (matrix.rows.isEmpty) true
+      else
+        StrassenMatrix.powersOfTwo(0)
+          .dropWhile(_ < matrix.rows.head.length)
+          .head == matrix.rows.head.length
 
     allRowsOfSameLength(matrix.rows) && isRowLengthPowerOfTwo
   }
