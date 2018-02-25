@@ -66,21 +66,41 @@ object StrassenMatrix {
     new StrassenMatrix[A](splitIntoRows(productStream, firstMatrix.rows.head.length))(m)
   }
 
-  def A11[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
-    new StrassenMatrix[A](List.empty)(n)
-  }
+  def A11[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] =
+    if (matrix.rowLength == 1)
+      matrix
+    else {
+      new StrassenMatrix[A](matrix.rows
+        .slice(0, matrix.rowLength / 2)
+        .map(_.slice(0, matrix.rowLength / 2)))
+    }
 
-  def A12[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
-    new StrassenMatrix[A](List.empty)(n)
-  }
+  def A12[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] =
+    if (matrix.rowLength == 1)
+      matrix
+    else {
+      new StrassenMatrix[A](matrix.rows
+        .slice(0, matrix.rowLength / 2)
+        .map(_.slice(matrix.rowLength / 2, matrix.rowLength)))
+    }
 
-  def A21[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
-    new StrassenMatrix[A](List.empty)(n)
-  }
+  def A21[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] =
+    if (matrix.rowLength == 1)
+      matrix
+    else {
+      new StrassenMatrix[A](matrix.rows
+        .slice(matrix.rowLength / 2, matrix.rowLength)
+        .map(_.slice(0, matrix.rowLength / 2)))
+    }
 
-  def A22[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
-    new StrassenMatrix[A](List.empty)(n)
-  }
+  def A22[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] =
+    if (matrix.rowLength == 1)
+      matrix
+    else {
+      new StrassenMatrix[A](matrix.rows
+        .slice(matrix.rowLength / 2, matrix.rowLength)
+        .map(_.slice(matrix.rowLength / 2, matrix.rowLength)))
+    }
 
   def B11[A](matrix: StrassenMatrix[A])(implicit n: Numeric[A]): StrassenMatrix[A] = {
     A11(matrix)(n)

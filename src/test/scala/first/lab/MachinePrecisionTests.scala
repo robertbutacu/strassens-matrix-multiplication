@@ -8,6 +8,15 @@ class MachinePrecisionTests extends FlatSpec {
 
   lazy val m2 = StrassenMatrix(m1.rows.map(_.reverse))
 
+  lazy val m3 = StrassenMatrix(
+    List(
+      List(1, 2, 3, 4),
+      List(5, 6, 7, 8),
+      List(9, 10, 11, 12),
+      List(13, 14, 15, 16)
+    )
+  )
+
   lazy val singleElementMatrix = StrassenMatrix(List(List(1)))
 
 
@@ -37,5 +46,25 @@ class MachinePrecisionTests extends FlatSpec {
 
   "Adding 2 Strassen Matrices of 1 element " should " be fine " in {
     assert(singleElementMatrix +++ singleElementMatrix === StrassenMatrix(List(List(2))))
+  }
+
+  "A11 of a Strassen Matrix " should "return the first quarter" in {
+    assert(StrassenMatrix.A11(singleElementMatrix) === singleElementMatrix)
+    assert(StrassenMatrix.A11(m3) === StrassenMatrix(List(List(1, 2), List(5, 6))))
+  }
+
+  "A12 of a Strassen Matrix " should "return the first quarter" in {
+    assert(StrassenMatrix.A12(singleElementMatrix) === singleElementMatrix)
+    assert(StrassenMatrix.A12(m3) === StrassenMatrix(List(List(3, 4), List(7, 8))))
+  }
+
+  "A21 of a Strassen Matrix " should "return the first quarter" in {
+    assert(StrassenMatrix.A21(singleElementMatrix) === singleElementMatrix)
+    assert(StrassenMatrix.A21(m3) === StrassenMatrix(List(List(9, 10), List(13, 14))))
+  }
+
+  "A22 of a Strassen Matrix " should "return the first quarter" in {
+    assert(StrassenMatrix.A22(singleElementMatrix) === singleElementMatrix)
+    assert(StrassenMatrix.A22(m3) === StrassenMatrix(List(List(11, 12), List(15, 16))))
   }
 }
