@@ -17,6 +17,19 @@ object StrassenAlgorithm {
                       strassenAlgorithm(firstMatrix.A22, secondMatrix.B22, n / 2, minN)
                      )
      */
-    new StrassenMatrix[A](List.empty)
+    //new StrassenMatrix[A](List.empty)
+    if( n <= minN)
+      StrassenMatrix.multiplyMatrices(firstMatrix, secondMatrix)
+    else {
+      val P1 = 1
+      val P2 = 2
+      val P3 = 3
+      val P4 = 4
+      val P5 = 5
+      val P6 = 6
+      val P7 = 7
+
+      new StrassenMatrix[A](List.empty)
+    }
   }
 }
