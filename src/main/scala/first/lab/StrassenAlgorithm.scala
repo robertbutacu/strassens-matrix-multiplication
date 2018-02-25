@@ -9,7 +9,7 @@ object StrassenAlgorithm {
                           minN: Int): StrassenMatrix[A] = {
     require(firstMatrix.rowLength == secondMatrix.rows.length)
 
-    def go(firstMatrix: StrassenMatrix[A],
+    def multiply(firstMatrix: StrassenMatrix[A],
            secondMatrix: StrassenMatrix[A],
            n: Int,
            minN: Int): StrassenMatrix[A] = {
@@ -18,27 +18,24 @@ object StrassenAlgorithm {
       if (n <= minN)
         StrassenMatrix.multiplyMatrices(firstMatrix, secondMatrix)
       else {
-        val P1 = go(
+        val P1 = multiply(
           A11(firstMatrix) +++ A22(firstMatrix),
           B11(secondMatrix) +++ B22(secondMatrix),
           n / 2,
           minN)
 
-        val P2 = go(A21(firstMatrix) +++ A22(firstMatrix), B11(secondMatrix), n / 2, minN)
+        val P2 = multiply(A21(firstMatrix) +++ A22(firstMatrix), B11(secondMatrix), n / 2, minN)
+        val P3 = multiply(A11(firstMatrix), B12(secondMatrix) --- B22(secondMatrix), n / 2, minN)
+        val P4 = multiply(A22(firstMatrix), B21(secondMatrix) --- B11(secondMatrix), n / 2, minN)
+        val P5 = multiply(A11(firstMatrix) +++ A12(firstMatrix), B22(secondMatrix), n / 2, minN)
 
-        val P3 = go(A11(firstMatrix), B12(secondMatrix) --- B22(secondMatrix), n / 2, minN)
-
-        val P4 = go(A22(firstMatrix), B21(secondMatrix) --- B11(secondMatrix), n / 2, minN)
-
-        val P5 = go(A11(firstMatrix) +++ A12(firstMatrix), B22(secondMatrix), n / 2, minN)
-
-        val P6 = go(
+        val P6 = multiply(
           A21(firstMatrix) --- A11(firstMatrix),
           B11(secondMatrix) --- B12(secondMatrix),
           n / 2,
           minN)
 
-        val P7 = go(
+        val P7 = multiply(
           A12(firstMatrix) --- A22(firstMatrix),
           B21(secondMatrix) +++ B22(secondMatrix),
           n / 2,
@@ -53,7 +50,7 @@ object StrassenAlgorithm {
       }
     }
 
-    go(firstMatrix, secondMatrix, firstMatrix.rowLength, minN)
+    multiply(firstMatrix, secondMatrix, firstMatrix.rowLength, minN)
   }
 
   private def combineMatrices[A](C11: StrassenMatrix[A],
@@ -66,7 +63,6 @@ object StrassenAlgorithm {
         .map(r => r._1 ::: second.rows(r._2))
 
     val upperHalfCombined = combineHorizontally(C11, C12)
-
     val lowerHalfCombined = combineHorizontally(C21, C22)
 
     StrassenMatrix(upperHalfCombined ++ lowerHalfCombined)(n)

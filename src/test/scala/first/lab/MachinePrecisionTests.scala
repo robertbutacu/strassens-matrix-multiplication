@@ -32,7 +32,6 @@ class MachinePrecisionTests extends FlatSpec {
 
   lazy val singleElementMatrix = StrassenMatrix(List(List(1)))
 
-
   "When machinePrecision is called" should " return 10 ^ (-15) " in {
     assert(MachinePrecision.machinePrecision === Math.pow(10, -15))
   }
