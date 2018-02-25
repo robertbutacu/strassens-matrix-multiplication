@@ -7,6 +7,8 @@ object StrassenAlgorithm {
   def compute[A: Numeric](firstMatrix: StrassenMatrix[A],
                           secondMatrix: StrassenMatrix[A],
                           minN: Int): StrassenMatrix[A] = {
+    require(firstMatrix.rowLength == secondMatrix.rows.length)
+
     def go(firstMatrix: StrassenMatrix[A],
            secondMatrix: StrassenMatrix[A],
            n: Int,

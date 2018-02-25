@@ -84,4 +84,8 @@ class MachinePrecisionTests extends FlatSpec {
   "Strassen Algorithm Multiplication " should "return the correct multiplication" in {
     assert(StrassenAlgorithm.compute(strassenMatrixTest, strassenMatrixReversedTest, 1) === strassenMatrixExpectedResult)
   }
+
+  "Strassen Algorithm multiplication " should " fail if the matrix aren't compatible" in {
+    assertThrows[IllegalArgumentException](StrassenAlgorithm.compute(strassenMatrixTest, m1, 1))
+  }
 }
