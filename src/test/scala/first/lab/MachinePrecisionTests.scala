@@ -8,6 +8,19 @@ class MachinePrecisionTests extends FlatSpec {
 
   lazy val m2 = StrassenMatrix(m1.rows.map(_.reverse))
 
+  lazy val strassenMatrixTest = StrassenMatrix((1 to 4).toList.map(_ => (1 to 4).toList))
+
+  lazy val strassenMatrixReversedTest = StrassenMatrix(strassenMatrixTest.rows.map(_.reverse))
+
+  lazy val strassenMatrixExpectedResult = StrassenMatrix(
+    List(
+      List(40, 30, 20, 10),
+      List(40, 30, 20, 10),
+      List(40, 30, 20, 10),
+      List(40, 30, 20, 10)
+    ))
+
+
   lazy val m3 = StrassenMatrix(
     List(
       List(1, 2, 3, 4),
@@ -66,5 +79,9 @@ class MachinePrecisionTests extends FlatSpec {
   "A22 of a Strassen Matrix " should "return the first quarter" in {
     assert(StrassenMatrix.A22(singleElementMatrix) === singleElementMatrix)
     assert(StrassenMatrix.A22(m3) === StrassenMatrix(List(List(11, 12), List(15, 16))))
+  }
+
+  "Strassen Algorithm Multiplication " should "return the correct multiplication" in {
+    assert(StrassenAlgorithm.compute(strassenMatrixTest, strassenMatrixReversedTest, 1) === strassenMatrixExpectedResult)
   }
 }
