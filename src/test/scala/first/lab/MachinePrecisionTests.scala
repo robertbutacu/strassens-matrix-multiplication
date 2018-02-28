@@ -44,8 +44,14 @@ class MachinePrecisionTests extends FlatSpec {
     assert(StrassenMatrix.multiplyMatrices(m1, m2) === StrassenMatrix(List(List(6, 3), List(6, 3))))
   }
 
-  "Instantiating a Strassen Matrix whose row length is not multiple of 2" should " break " in {
-    assertThrows[IllegalArgumentException](StrassenMatrix((1 to 3).toList.map(_ => (1 to 3).toList)))
+  "Instantiating a Strassen Matrix whose row length is not multiple of 2" should " not break " in {
+    assert(StrassenMatrix((1 to 3).toList.map(_ => (1 to 3).toList)).rows ===
+        List(
+          List(1, 2, 3, 0),
+          List(1, 2, 3, 0),
+          List(1, 2, 3, 0),
+          List(0, 0, 0, 0)
+        ))
   }
 
   "Adding 2 Strassen Matrices " should "return a Strassen matrix" in {

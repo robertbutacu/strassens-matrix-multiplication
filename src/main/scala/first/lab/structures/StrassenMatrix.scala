@@ -1,8 +1,26 @@
 package first.lab.structures
 
 
-case class StrassenMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
-  require(StrassenMatrix.isValidMatrix(this))
+case class StrassenMatrix[A: Numeric](prePaddedRows: List[List[A]]) extends Matrix[A] {
+  //require(StrassenMatrix.isValidMatrix(this))
+
+  val rows: List[List[A]] = pad(prePaddedRows)
+
+  def pad(rows: List[List[A]])(implicit n: Numeric[A]): List[List[A]] = {
+    val maxLengthRow = rows.maxBy(_.length).length
+
+    def powsOfTwo(from: Int): Stream[Double] = Stream.cons(Math.pow(2, from), powsOfTwo(from + 1))
+
+    val toPadLength = powsOfTwo(0).dropWhile(_ < maxLengthRow.toDouble).head.toInt
+
+    val updatedRows = rows.map(row => row ::: List.fill(toPadLength - row.length)(n.zero))
+
+    val toAddRowsLength = toPadLength - rows.length
+
+    val toAddRows = (1 to toAddRowsLength).toList.map(_ => List.fill(toPadLength)(n.zero))
+
+    updatedRows ::: toAddRows
+  }
 
   override def rowLength: Int = if (this.rows.isEmpty) 0 else this.rows.head.length
 
