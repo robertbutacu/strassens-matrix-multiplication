@@ -31,7 +31,7 @@ object StrassenAlgorithm {
 
         val P6 = multiply(
           A21(firstMatrix) --- A11(firstMatrix),
-          B11(secondMatrix) --- B12(secondMatrix),
+          B11(secondMatrix) +++ B12(secondMatrix),
           n / 2,
           minN)
 

@@ -20,6 +20,10 @@ case class RegularMatrix[A: Numeric](rows: List[List[A]]) extends Matrix[A] {
   private def applyOperation(other: Matrix[A], f: (A, A) => A): Matrix[A] = {
     RegularMatrix[A](this.rows, other, f)
   }
+
+  override def map[B](f: A => B)(implicit n: Numeric[B]): RegularMatrix[B] = RegularMatrix(this.rows.map(_.map(f)))(n)
+
+  override def mapRows[B](f: List[A] => List[B])(implicit n: Numeric[B]): RegularMatrix[B] = RegularMatrix(this.rows.map(f))(n)
 }
 
 object RegularMatrix {

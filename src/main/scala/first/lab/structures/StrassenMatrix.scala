@@ -46,6 +46,9 @@ case class StrassenMatrix[A: Numeric](prePaddedRows: List[List[A]]) extends Matr
           .map(v => f(v._1, v._2)) // mapping them plus
       })
   }
+
+  override def map[B](f: A => B)(implicit n: Numeric[B]): StrassenMatrix[B] = StrassenMatrix(rows.map(_.map(f)))
+  override def mapRows[B](f: List[A] => List[B])(implicit n: Numeric[B]): StrassenMatrix[B] = StrassenMatrix(rows.map(f))
 }
 
 object StrassenMatrix {
