@@ -37,7 +37,7 @@ class MachinePrecisionTests extends FlatSpec {
   }
 
   "Machine precision " should " return false on addition's associativity " in {
-    assert(!MachinePrecision.isAdditionNotAssociativeWithMachinePrecision)
+    assert(MachinePrecision.isAdditionNotAssociativeWithMachinePrecision)
   }
 
   "Calling multiplyMatrices " should " return the multiplication of the matrices " in {
@@ -92,5 +92,13 @@ class MachinePrecisionTests extends FlatSpec {
 
   "Strassen Algorithm multiplication " should " fail if the matrix aren't compatible" in {
     assertThrows[IllegalArgumentException](StrassenAlgorithm.compute(strassenMatrixTest, m1, 1))
+  }
+
+  "Strassen Algorithm multiplication " should "give same result as regular multiplication" in {
+    lazy val m1 = StrassenMatrix((1 to 8).toList.map(_ => (1 to 8).toList))
+
+    lazy val m2 = StrassenMatrix(m1.rows.map(_.reverse))
+
+    assert(StrassenAlgorithm.compute(m1, m2, 2) === StrassenMatrix.multiplyMatrices(m1, m2))
   }
 }
